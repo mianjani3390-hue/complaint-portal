@@ -1,0 +1,40 @@
+redirectsOrigin = "config"
+plugins = []
+headers = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "C:\\Users\\STANDARD LAPTOP\\Downloads\\Complaint Project\\Complaint Project\\User UI\\Complaint-system\\bano-qabil-compliant-system\\dist"
+publishOrigin = "config"
+commandOrigin = "config"
+base = "C:\\Users\\STANDARD LAPTOP\\Downloads\\Complaint Project\\Complaint Project\\User UI\\Complaint-system\\bano-qabil-compliant-system"
+command = "npm --prefix \"../../../Admin UI\" run build && npm run build && node scripts/copy-admin-dist.mjs"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

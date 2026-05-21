@@ -1,0 +1,12 @@
+
+> dev
+> node scripts/dev-all.mjs
+
+
+> complainthub-admin@1.0.0 dev
+> vite
+
+
+> bano-qabil-compliant-system@0.0.0 dev:user-only
+> vite
+

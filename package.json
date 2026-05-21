@@ -1,0 +1,11 @@
+{
+  "name": "complaint-project",
+  "private": true,
+  "scripts": {
+    "dev": "node scripts/dev-all.mjs",
+    "install:all": "npm install && npm install --prefix \"Admin UI\" && npm install --prefix \"User UI/Complaint-system/bano-qabil-compliant-system\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

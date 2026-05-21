@@ -1,0 +1,11 @@
+[build]
+  # Build Admin UI first, then build this User UI, and copy Admin's built files
+  # into the User UI `dist/admin` folder so both apps are served from the
+  # same Netlify site (User UI at `/`, Admin UI at `/admin/`).
+  command = "npm --prefix \"../../../Admin UI\" run build && npm run build && node scripts/copy-admin-dist.mjs"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
