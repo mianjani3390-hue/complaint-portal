@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../supabase_client";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useUserAuth } from "../contexts/UserAuthContext";
 import {
   CheckCircle2,
   FileText,
@@ -9,9 +10,13 @@ import {
   Send,
   ShieldCheck,
   Sparkles,
+  LogOut,
 } from "lucide-react";
 
 export default function CreateComplaint() {
+  const navigate = useNavigate();
+  const { user, signOut } = useUserAuth();
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("Academics");
@@ -29,25 +34,27 @@ export default function CreateComplaint() {
     setLoading(true);
     const complaintCode = createComplaintCode();
 
+    const complaintData = {
+      complaint_code: complaintCode,
+      title,
+      description,
+      user_name: user?.email?.split("@")[0] || "Anonymous",
+      user_email: user?.email || null,
+      user_id: user?.id || null,
+      department: category,
+      status: "new",
+    };
+
     const { error } = await supabase
       .from("complaints")
-      .insert([
-        {
-          complaint_code: complaintCode,
-          title,
-          description,
-          user_name: "Anonymous",
-          department: category,
-          status: "new",
-        },
-      ]);
+      .insert([complaintData]);
 
     setLoading(false);
 
     if (error) {
       const message =
         error.code === "42501"
-          ? "Complaint submit permission is not enabled in Supabase. Please ask the admin to enable anonymous complaint inserts."
+          ? "Complaint submit permission is not enabled in Supabase. Please ask the admin to enable complaint inserts."
           : error.message;
       alert(message);
     } else {
@@ -92,6 +99,17 @@ export default function CreateComplaint() {
               <Plus size={18} />
               New Complaint
             </button>
+
+            {user && (
+              <button
+                type="button"
+                onClick={() => navigate('/dashboard')}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-purple-600 px-4 py-3 font-semibold text-white shadow-lg shadow-purple-500/25 transition hover:bg-purple-700"
+              >
+                <FileText size={18} />
+                View Dashboard
+              </button>
+            )}
 
             <Link
               to="/"

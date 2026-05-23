@@ -24,6 +24,7 @@ create table public.complaints (
   description text,
   user_name text not null,
   user_email text,
+  user_id uuid references auth.users (id) on delete set null,
   department text,
   status public.complaint_status not null default 'new',
   created_at timestamptz not null default now(),
@@ -189,6 +190,12 @@ create policy "Staff update complaints"
   to authenticated
   using (public.is_staff())
   with check (public.is_staff());
+
+-- Users read own complaints
+create policy "Users read own complaints"
+  on public.complaints for select
+  to authenticated
+  using (auth.uid() = user_id);
 
 -- Public/citizen app can insert (optional – tighten if you use service role only)
 create policy "Anyone insert complaint"

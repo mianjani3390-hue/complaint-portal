@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { adminLoginUrl } from "../supabase_client";
+import { useUserAuth } from "../contexts/UserAuthContext";
 import logo from "../assets/logo.png";
 import {
   ShieldCheck,
@@ -9,9 +10,16 @@ import {
   Mail,
   Phone,
   MapPin,
+  LogOut,
 } from "lucide-react";
 
 export default function LandingPage() {
+  const { isAuthenticated, user, signOut } = useUserAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
 
@@ -36,20 +44,48 @@ export default function LandingPage() {
           </Link>
 
           <div className="flex flex-1 flex-wrap items-center justify-end gap-3 min-w-0">
-            <Link to="/create-complaint" className="w-full sm:w-auto">
-              <button className="w-full sm:w-auto px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition duration-200 ease-out hover:scale-[1.02]">
-                New Complaint
-              </button>
-            </Link>
-
-            <a href={adminLoginUrl} className="w-full sm:w-auto">
-              <button
-                type="button"
-                className="w-full sm:w-auto px-4 py-2 rounded-xl border border-blue-600 text-blue-600 text-sm font-medium hover:bg-blue-600 hover:text-white transition duration-200 ease-out hover:scale-[1.02]"
-              >
-                Admin Login
-              </button>
-            </a>
+            {isAuthenticated ? (
+              <>
+                <Link to="/dashboard" className="w-full sm:w-auto">
+                  <button className="w-full sm:w-auto px-4 py-2 rounded-xl bg-purple-600 text-white text-sm font-medium hover:bg-purple-700 transition duration-200 ease-out hover:scale-[1.02]">
+                    My Complaints
+                  </button>
+                </Link>
+                <Link to="/create-complaint" className="w-full sm:w-auto">
+                  <button className="w-full sm:w-auto px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition duration-200 ease-out hover:scale-[1.02]">
+                    New Complaint
+                  </button>
+                </Link>
+                <button
+                  onClick={handleSignOut}
+                  className="w-full sm:w-auto px-4 py-2 rounded-xl border border-red-600 text-red-600 text-sm font-medium hover:bg-red-600 hover:text-white transition duration-200 ease-out hover:scale-[1.02] flex items-center justify-center gap-2"
+                >
+                  <LogOut size={16} />
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/create-complaint" className="w-full sm:w-auto">
+                  <button className="w-full sm:w-auto px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition duration-200 ease-out hover:scale-[1.02]">
+                    New Complaint
+                  </button>
+                </Link>
+                <Link to="/login" className="w-full sm:w-auto">
+                  <button className="w-full sm:w-auto px-4 py-2 rounded-xl bg-purple-600 text-white text-sm font-medium hover:bg-purple-700 transition duration-200 ease-out hover:scale-[1.02]">
+                    Sign In
+                  </button>
+                </Link>
+                <a href={adminLoginUrl} className="w-full sm:w-auto">
+                  <button
+                    type="button"
+                    className="w-full sm:w-auto px-4 py-2 rounded-xl border border-blue-600 text-blue-600 text-sm font-medium hover:bg-blue-600 hover:text-white transition duration-200 ease-out hover:scale-[1.02]"
+                  >
+                    Admin Login
+                  </button>
+                </a>
+              </>
+            )}
           </div>
 
         </div>
@@ -86,14 +122,25 @@ export default function LandingPage() {
                 </button>
               </Link>
 
-              <a href={adminLoginUrl}>
-                <button
-                  type="button"
-                  className="px-6 py-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 transition hover:scale-105"
-                >
-                  Admin Portal
-                </button>
-              </a>
+              {isAuthenticated ? (
+                <Link to="/dashboard">
+                  <button
+                    type="button"
+                    className="px-6 py-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 transition hover:scale-105"
+                  >
+                    My Complaints
+                  </button>
+                </Link>
+              ) : (
+                <Link to="/login">
+                  <button
+                    type="button"
+                    className="px-6 py-3 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 transition hover:scale-105"
+                  >
+                    Sign In
+                  </button>
+                </Link>
+              )}
             </div>
 
           </div>
@@ -126,8 +173,8 @@ export default function LandingPage() {
 
               <Feature
                 icon={<ShieldCheck className="text-blue-600" />}
-                title="Transparent Tracking"
-                desc="Track complaint progress anytime."
+                title="Track Progress"
+                desc="Sign in to track complaint progress anytime."
               />
 
             </div>

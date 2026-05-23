@@ -190,11 +190,11 @@ export default function AllComplaints() {
 
                   return (
                     <tr key={c.id} className="transition-colors hover:bg-blue-50/50">
-                      <td className={`${td} font-semibold`}>{c.complaint_code}</td>
+                      <td className={`${td} font-semibold whitespace-nowrap`}>{c.complaint_code}</td>
                       <td className={td}>{c.title}</td>
                       <td className={td}>{c.user_name}</td>
                       <td className={td}>{c.department || '-'}</td>
-                      <td className={`${td} text-slate-500`}>{formatDate(c.created_at)}</td>
+                      <td className={`${td} text-slate-500 whitespace-nowrap`}>{formatDate(c.created_at)}</td>
                       <td className={td}>
                         <select
                           value={canShowSelected ? c.status : ''}
